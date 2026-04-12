@@ -1,0 +1,80 @@
+workflows:
+  ios-release:
+    name: iOS Release
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: ai.roofax.app
+      groups:
+        - appstore
+      vars:
+        BUNDLE_ID: ai.roofax.app
+        EXPO_NO_TELEMETRY: "1"
+      node: 20
+    scripts:
+      - name: Install dependencies
+        script: npm install
+      - name: Set up Expo
+        script: npx expo prebuild --platform ios --clean
+      - name: Install CocoaPods
+        script: cd ios && pod install
+      - name: Bundle JS
+        script: |
+          npx expo export:embed --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+      - name: Build and export IPA
+        script: |
+          set -e
+          PROFILE_PATH=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1)
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(/usr/bin/security cms -D -i "$PROFILE_PATH"))
+          
+          xcodebuild archive \
+            -workspace ios/Roofax.xcworkspace \
+            -scheme Roofax \
+            -archivePath build/Roofax.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM=4J776DD89W \
+            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            SKIP_BUNDLING=1 \
+            | xcpretty || true
+          
+          cat > /tmp/ExportOptions.plist << PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>4J776DD89W</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>ai.roofax.app</key>
+              <string>$PROFILE_NAME</string>
+            </dict>
+          </dict>
+          </plist>
+          PLIST
+          
+          xcodebuild -exportArchive \
+            -archivePath build/Roofax.xcarchive \
+            -exportOptionsPlist /tmp/ExportOptions.plist \
+            -exportPath build/ios/ipa
+      - name: Upload to TestFlight
+        script: |
+          mkdir -p ~/.private_keys
+          echo -n "$APP_STORE_CONNECT_PUBLISHER_PRIVATE_KEY" > ~/.private_keys/AuthKey_${APP_STORE_CONNECT_KEY_IDENTIFIER}.p8
+          
+          xcrun altool --upload-app \
+            --type ios \
+            --file build/ios/ipa/Roofax.ipa \
+            --apiKey "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
+    artifacts:
+      - build/ios/ipa/*.ipa
