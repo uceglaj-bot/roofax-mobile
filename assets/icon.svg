@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Background: navy rounded square -->
+  <rect width="1024" height="1024" rx="220" ry="220" fill="#0f172a"/>
+
+  <!-- House body -->
+  <rect x="290" y="480" width="444" height="320" rx="18" fill="#ffffff"/>
+
+  <!-- Roof (triangle) -->
+  <polygon points="512,180 190,510 834,510" fill="#f97316"/>
+
+  <!-- Door -->
+  <rect x="430" y="620" width="164" height="180" rx="16" fill="#0f172a"/>
+
+  <!-- Shield (lower right, overlapping) -->
+  <path d="M700 580 L780 610 L780 690 Q780 750 700 790 Q620 750 620 690 L620 610 Z" fill="#f97316"/>
+
+  <!-- Checkmark inside shield -->
+  <polyline points="645,690 690,735 760,655" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

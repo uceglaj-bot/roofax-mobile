@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048" height="2048">
+  <!-- Background: navy -->
+  <rect width="2048" height="2048" fill="#0f172a"/>
+
+  <!-- House icon centered -->
+  <!-- House body -->
+  <rect x="824" y="920" width="400" height="288" rx="16" fill="#ffffff"/>
+  <!-- Roof -->
+  <polygon points="1024,640 760,940 1288,940" fill="#f97316"/>
+  <!-- Door -->
+  <rect x="900" y="1040" width="148" height="168" rx="14" fill="#0f172a"/>
+  <!-- Shield -->
+  <path d="M1160 960 L1230 988 L1230 1060 Q1230 1112 1160 1148 Q1090 1112 1090 1060 L1090 988 Z" fill="#f97316"/>
+  <!-- Checkmark inside shield -->
+  <polyline points="1112,1056 1150,1096 1210,1022" fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark: Roofax -->
+  <text x="1024" y="1320" font-family="DejaVu Sans, sans-serif" font-size="120" font-weight="700" fill="#ffffff" text-anchor="middle">Roofax</text>
+
+  <!-- Tagline -->
+  <text x="1024" y="1410" font-family="DejaVu Sans, sans-serif" font-size="52" font-weight="400" fill="#94a3b8" text-anchor="middle">Your Home's Digital Record</text>
+</svg>

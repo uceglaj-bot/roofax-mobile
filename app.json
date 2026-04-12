@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Roofax",
+    "slug": "roofax",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "ai.roofax.app",
+      "buildNumber": "2",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Roofax needs camera access to take photos of your home projects.",
+        "NSPhotoLibraryUsageDescription": "Roofax needs photo library access to attach photos to your home records."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      },
+      "package": "ai.roofax.app"
+    },
+    "scheme": "roofax",
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
